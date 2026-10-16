@@ -30,6 +30,7 @@ if (Cache::has($key)) {
     $attempts = Cache::increment($key);
     if ($attempts > $this->maxAttempts) {
         Cache::put($key . ':blocked', true, $this->blockMinutes * 60);
+        Log::warning("IP $ip has been blocked for $this->blockMinutes minute(s) due too many requests.");
         Log::warning("IP $ip has been blocked for {$this->blockMinutes} minute(s) due to too many attempts.");
         Session::flash('errors', "Your IP has been blocked for {$this->blockMinutes} minute(s) due to too many attempts.");
         return redirect()->back();
